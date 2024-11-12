@@ -17,7 +17,7 @@ public class Flickering : MonoBehaviour
     {
         //float Flicker = (Mathf.Sin(Time.time) / 2f) + 0.5f;
 
-        float Flicker = Time.deltaTime * Multiplier * 10;
+        float Flicker = Time.deltaTime * Multiplier * 15;
 
         Light.intensity = Base + Flicker;
 

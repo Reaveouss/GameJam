@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour
 {
@@ -7,9 +8,14 @@ public class Movement : MonoBehaviour
     private Vector2 movementInput = Vector2.zero;
     public Rigidbody2D rb;
     private float playerInput = 0;
+    [SerializeField] Animator animator;
+    Transform trans;
+    bool shouldFlip;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        trans = GetComponent<Transform>();
     }
 
    
@@ -19,18 +25,26 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = move * Speed;
 
         //set the animations
+        animator.SetBool("Walking", move.magnitude != 0);
 
-        SwapSprite();
+
+        SwapSprite(move);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        if (context.performed)
+        {
+            shouldFlip = movementInput.x < 0;
+        }
     }
 
-    public void SwapSprite()
+    public void SwapSprite(Vector2 Move)
     {
         //impliment the different sprites for facing left and right
+        trans.GetComponent<SpriteRenderer>().flipX = shouldFlip;
+
     }
     
 }
